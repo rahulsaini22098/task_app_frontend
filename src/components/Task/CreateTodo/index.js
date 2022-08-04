@@ -2,13 +2,15 @@ import { useFormik } from 'formik'
 import React from 'react'
 import style from './style.module.css'
 
-const initialState = {
-    taskname: "",
-    taskDescription: ""
-}
+const CreateTodo = ({
+    selectedTask,
+    onTaskCreate,
+    onTaskUpdate
+}) => {
 
+    console.log("55555555555555555555", selectedTask);
+    const isTaskSelected = Object.keys(selectedTask).length !== 0
 
-const CreateTodo = ({ onTaskCreate }) => {
     const validate = values => {
         const { taskname, taskDescription } = values
         const errors = {};
@@ -22,23 +24,28 @@ const CreateTodo = ({ onTaskCreate }) => {
 
         return errors;
     };
+
     const {
         values,
         touched,
         errors,
         handleSubmit,
         handleChange,
-        handleBlur
+        handleBlur,
+        resetForm
     } = useFormik({
         initialValues: {
-            taskname: '',
-            taskDescription: '',
+            taskname: selectedTask?.taskname || '',
+            taskDescription: selectedTask?.taskDescription || ''
         },
+        enableReinitialize: true,
         validate,
-        onSubmit: values => { onTaskCreate(values) },
+        onSubmit: values => {
+            isTaskSelected
+                ? onTaskUpdate(selectedTask.id, values, resetForm)
+                : onTaskCreate(values, resetForm)
+        },
     });
-
-
 
     return (
         <div className={style.todo_container}>
@@ -70,7 +77,7 @@ const CreateTodo = ({ onTaskCreate }) => {
                     ></textarea>
                 </div>
 
-                <button className={style.submit_button} type='submit'>Create Todo</button>
+                <button className={style.submit_button} type='submit'>{isTaskSelected ? 'Update Task' : 'Create Task'}</button>
             </form>
         </div>
     )
