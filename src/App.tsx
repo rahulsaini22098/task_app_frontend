@@ -1,6 +1,7 @@
-import React from 'react';
-import './App.css';
-import NavBar from './components/NavBar';
+import React from 'react'
+
+import './App.css'
+import NavBar from './components/NavBar'
 import Task from './components/Task'
 
 function App() {
@@ -9,7 +10,7 @@ function App() {
       <NavBar />
       <Task />
     </React.Fragment>
-  );
+  )
 }
 
-export default App;
+export default App

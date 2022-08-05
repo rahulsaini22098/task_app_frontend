@@ -1,0 +1,71 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "@typescript-eslint",
+        "eslint-plugin-import-helpers"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            2
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "never"
+        ],
+        "import-helpers/order-imports": [
+            "warn",
+            {
+                "newlinesBetween": "always",
+                "groups": [
+                    "module", "absolute", "parent", "sibling", "index"
+                ],
+                "alphabetize": { "order": "ignore", "ignoreCase": true }
+            }
+        ],
+        "object-curly-newline": [
+            "error", 
+            {
+                "ObjectPattern": { "multiline": true, "consistent":true },
+                "ImportDeclaration": "never",
+                "ExportDeclaration": { "multiline": true, "minProperties": 3 }
+            }
+        ],
+        "padding-line-between-statements": [
+            "warn",
+            {   
+                "blankLine": "always",
+                "prev": "*",
+                "next": ["break", "case", "default", "class", "export", "for", "function", "if", "return", "switch", "throw", "try", "while"]
+            }
+        ],
+        "comma-spacing": ["error", { "before": false, "after": true }],
+        "object-curly-spacing": ["error", "always"]
+
+    }
+}

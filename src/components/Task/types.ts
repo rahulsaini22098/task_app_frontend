@@ -2,21 +2,21 @@ export interface TaskType {
   id: string;
   taskname: string;
   taskDescription: string;
-  isDone: Boolean;
+  isDone: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface InitialState {
   tasks: TaskType[];
-  taskListLoader: Boolean;
+  taskListLoader: boolean;
   selectedTask: TaskType | null;
 }
 
 export interface CreateTodoProps {
   selectedTask: TaskType | null;
-  onTaskCreate: (value: FormValues, cb: Function) => void;
-  onTaskUpdate: (id: string, values: FormValues, cb: Function) => void;
+  onTaskCreate: (value: FormValues, cb: () => void) => void;
+  onTaskUpdate: (id: string, values: FormValues, cb: () => void) => void;
 }
 
 export interface FormValues {
