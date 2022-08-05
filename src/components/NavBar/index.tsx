@@ -1,7 +1,7 @@
 import React from "react";
 import style from './style.module.css'
-import { FaUser } from 'react-icons/fa'
 import axios from "axios";
+import { UserOutlined } from "@ant-design/icons";
 
 const NavBar = () => {
 
@@ -24,7 +24,7 @@ const NavBar = () => {
     return (
         <div className={style.navbar_container}>
             <div className={style.user_profile_image}>
-                <FaUser />
+                <UserOutlined />
                 <input
                     className={style.input_upload_file}
                     type="file"

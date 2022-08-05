@@ -1,10 +1,6 @@
 import React from "react";
-import {
-    FaEdit,
-    FaCheck,
-    FaTrash,
-    FaChevronDown
-} from 'react-icons/fa'
+import { CheckOutlined, DeleteFilled, EditOutlined } from "@ant-design/icons";
+
 import { TodoListInterface } from "../types";
 
 import style from './style.module.css'
@@ -25,12 +21,9 @@ const TodoList: React.FC<TodoListInterface> = ({
                     </div>
 
                     <div className={style.task_operations}>
-                        <FaEdit onClick={() => onEditTask(task.id)} />
-                        <FaCheck className={style.success} />
-                        <FaTrash
-                            className={style.danger}
-                            onClick={() => onTaskDelete(task.id)}
-                        />
+                        <EditOutlined onClick={() => onEditTask(task.id)} />
+                        <CheckOutlined className={style.success} />
+                        <DeleteFilled className={style.danger} onClick={() => onTaskDelete(task.id)} />
                     </div>
                 </div>
                 {/* <FaChevronDown className={style.arrow_expand} /> */}

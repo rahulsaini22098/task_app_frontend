@@ -46,7 +46,7 @@
 .task_operations{
     width: 150px;
 }
-.task_operations > svg{
+.task_operations > span{
     margin: 0 10px;
     font-size: 16px;
     cursor: pointer;

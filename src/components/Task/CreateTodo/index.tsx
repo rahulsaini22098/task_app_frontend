@@ -1,8 +1,8 @@
-import { useFormik } from 'formik'
 import React from 'react'
+import { useFormik } from 'formik'
 import { CreateTodoProps, FormValues } from '../types'
 import style from './style.module.css'
-
+import { Input } from 'antd'
 
 
 const CreateTodo: React.FC<CreateTodoProps> = ({
@@ -10,7 +10,6 @@ const CreateTodo: React.FC<CreateTodoProps> = ({
     onTaskCreate,
     onTaskUpdate,
 }) => {
-
 
     const isTaskSelected = selectedTask !== null
 
@@ -55,7 +54,7 @@ const CreateTodo: React.FC<CreateTodoProps> = ({
             <form className={style.task_form} onSubmit={handleSubmit}>
                 <div className={style.group_input}>
                     <label>Task Name</label>
-                    <input
+                    <Input
                         className={style.task_input}
                         type='text'
                         name='taskname'
@@ -69,15 +68,15 @@ const CreateTodo: React.FC<CreateTodoProps> = ({
 
                 <div className={style.group_input}>
                     <label>Task Description</label>
-                    <textarea
+                    <Input.TextArea
                         className={style.task_textarea}
                         name='taskDescription'
-                        rows={5}
+                        rows={2}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.taskDescription}
                         data-error={touched.taskDescription && errors.taskDescription ? 'true' : 'false'}
-                    ></textarea>
+                    />
                 </div>
 
                 <button className={style.submit_button} type='submit'>{isTaskSelected ? 'Update Task' : 'Create Task'}</button>

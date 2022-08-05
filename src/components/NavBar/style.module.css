@@ -19,7 +19,7 @@
   border-radius: 40px;
 }
 
-.user_profile_image > svg {
+.user_profile_image > span {
   color: aliceblue;
   font-size: 30px;
 }
