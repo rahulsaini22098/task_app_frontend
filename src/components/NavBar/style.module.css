@@ -1,0 +1,33 @@
+.navbar_container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  padding: 20px 30px;
+  background-color: inherit;
+}
+
+.user_profile_image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border: 1px solid #665e5e;
+  border-radius: 40px;
+}
+
+.user_profile_image > svg {
+  color: aliceblue;
+  font-size: 30px;
+}
+
+.input_upload_file {
+  position: absolute;
+  left: 0;
+  width: inherit;
+  height: inherit;
+  opacity: 0;
+}
