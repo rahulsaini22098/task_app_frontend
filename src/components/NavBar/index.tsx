@@ -5,18 +5,20 @@ import axios from "axios";
 
 const NavBar = () => {
 
-    const changePictureHandler = (e) => {
-        const file = e.target.files[0]
-        const formData = new FormData()
-        formData.set('profile_picture', file, file.name)
-
-        axios.post('/upload/picture', formData, {
-            headers: {
-                "content-type": 'multipart/form-data'
-            }
-        })
+    const changePictureHandler = (e: { target: HTMLInputElement }) => {
+        const file = e.target.files?.[0]
+        
+        if(file){
+            const formData = new FormData()
+            formData.set('profile_picture', file, file.name)
+            axios.post('/upload/picture', formData, {
+                headers: {
+                    "content-type": 'multipart/form-data'
+                }
+            })
             .then(res => console.log(res))
             .catch(err => console.log(err))
+        }
     }
 
     return (

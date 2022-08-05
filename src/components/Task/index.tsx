@@ -3,75 +3,78 @@ import axios from "../../utilities/axios";
 import style from './style.module.css'
 import CreateTodo from "./CreateTodo";
 import TodoList from "./TodoList";
-
+import { FormValues, InitialState, TaskType } from "./types";
 
 const initialState = {
     tasks: [],
     taskListLoader: true,
-    selectedTask: {},
+    selectedTask: null,
 }
 
 const Task = () => {
-
-    const [state, setState] = useState(initialState)
+    const [state, setState] = useState<InitialState>(initialState)
 
     useEffect(() => {
-        axios.get('/')
-            .then(res => {
-                console.log(res)
+        axios.get<TaskType[]>('/')
+            .then((res: { data: TaskType[] }) => {
                 if (res !== null) {
                     setState({ ...state, tasks: res.data, taskListLoader: false })
                 }
             })
-            .catch(err => {
+            .catch((err: any) => {
                 console.log(err)
                 setState({ ...state, taskListLoader: false })
             })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const taskCreateHandler = (value, cb) => {
+    const taskCreateHandler = (value: FormValues, cb: Function) => {
         axios.post('create', value)
-            .then(res => {
+            .then((res: { data: any; }) => {
                 const tasks = [...state.tasks, res.data]
                 setState({ ...state, tasks: tasks })
                 cb()
             })
-            .catch(err => {
+            .catch((err: any) => {
                 console.log(err)
             })
     }
 
-    const taskUpdateHandler = (id, values, cb) => {
+    const taskUpdateHandler = (id: string, values: FormValues, cb: Function) => {
         axios.post(`update/${id}`, values)
-            .then(res => {
-                console.log(res)
-                const filterTask = state.tasks.filter(task => task.id !== id)
-                const updateTask = { ...state.selectedTask, ...values }
-                filterTask.push(updateTask)
-                setState({ ...state, tasks: filterTask, selectedTask: {} })
-                cb()
+            .then((res: any) => {
+                const filterTask: TaskType[] = state.tasks.filter(task => task.id !== id)
+
+                if(state.selectedTask !== null){
+                    const updateTask: TaskType = { ...state.selectedTask, ...values }
+                    filterTask.push(updateTask)
+                    setState({ ...state, tasks: filterTask, selectedTask: null })
+                    cb()
+                }
             })
-            .catch(err => {
+            .catch((err: any) => {
                 console.log(err)
             })
 
 
     }
 
-    const taskDeleteHandler = (taskId) => {
+    const taskDeleteHandler = (taskId: string) => {
         axios.delete(`${taskId}`)
-            .then(res => {
+            .then((res: any) => {
                 const filterTasks = state.tasks.filter(task => task.id !== taskId)
                 setState({ ...state, tasks: filterTasks })
             })
-            .catch(err => {
+            .catch((err: any) => {
                 console.log(err);
             })
     }
 
-    const taskEditHandler = (id) => {
+    const taskEditHandler = (id: string) => {
         const task = state.tasks.find(task => task.id === id)
-        setState({ ...state, selectedTask: task })
+        if(task !== undefined){
+            setState({ ...state, selectedTask: task })
+        }
     }
 
 

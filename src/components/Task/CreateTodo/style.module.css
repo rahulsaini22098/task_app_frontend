@@ -1,47 +1,49 @@
-.todo_container{
-    width: 100%;
-    height: 300px;
-    padding: 20px 30px;
-    background-color: #ffffff;
-    border-radius: 4px;
-    overflow-y: auto;
+.todo_container {
+  width: 100%;
+  height: 300px;
+  padding: 20px 30px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  overflow-y: auto;
 }
 
-.task_form{
-    display: flex;
-    flex-direction: column;
+.task_form {
+  display: flex;
+  flex-direction: column;
 }
 
-.group_input{
-    display: flex;
-    flex-direction: column;
-    margin: 10px 0;
+.group_input {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
 }
 
-.task_input, .task_textarea{
-    height: 30px;
-    padding-left: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: 1px solid #dbdbdb;
+.task_input,
+.task_textarea {
+  height: 30px;
+  padding-left: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #dbdbdb;
 }
-.task_textarea{
-    height: inherit;
+.task_textarea {
+  height: inherit;
 }
-.task_input[error='true'], .task_textarea[error='true']{
-    border: 1px solid #BF3312;
+.task_input[data-error="true"],
+.task_textarea[data-error="true"] {
+  border: 1px solid #bf3312;
 }
 
-.submit_button{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 190px;
-    margin: auto;
-    padding: 15px 0;
-    background-color: #BF3312;
-    border: 0;
-    border-radius: 5px;
-    font-size: 16px;
-    color: #ffffff;
+.submit_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  margin: auto;
+  padding: 15px 0;
+  background-color: #bf3312;
+  border: 0;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #ffffff;
 }

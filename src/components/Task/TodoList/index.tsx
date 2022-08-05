@@ -5,10 +5,11 @@ import {
     FaTrash,
     FaChevronDown
 } from 'react-icons/fa'
+import { TodoListInterface } from "../types";
 
 import style from './style.module.css'
 
-const TodoList = ({
+const TodoList: React.FC<TodoListInterface> = ({
     tasks,
     onTaskDelete,
     onEditTask
@@ -32,7 +33,7 @@ const TodoList = ({
                         />
                     </div>
                 </div>
-                <FaChevronDown className={style.arrow_expand} />
+                {/* <FaChevronDown className={style.arrow_expand} /> */}
             </li>
         )
     })

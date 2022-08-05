@@ -1,19 +1,22 @@
 import { useFormik } from 'formik'
 import React from 'react'
+import { CreateTodoProps, FormValues } from '../types'
 import style from './style.module.css'
 
-const CreateTodo = ({
+
+
+const CreateTodo: React.FC<CreateTodoProps> = ({
     selectedTask,
     onTaskCreate,
-    onTaskUpdate
+    onTaskUpdate,
 }) => {
 
-    console.log("55555555555555555555", selectedTask);
-    const isTaskSelected = Object.keys(selectedTask).length !== 0
 
-    const validate = values => {
+    const isTaskSelected = selectedTask !== null
+
+    const validate = (values: FormValues) => {
         const { taskname, taskDescription } = values
-        const errors = {};
+        const errors: any = {};
         if (!taskname || taskname.length === 0) {
             errors.taskname = 'Required';
         }
@@ -35,8 +38,8 @@ const CreateTodo = ({
         resetForm
     } = useFormik({
         initialValues: {
-            taskname: selectedTask?.taskname || '',
-            taskDescription: selectedTask?.taskDescription || ''
+            taskname: isTaskSelected ? selectedTask.taskname : '',
+            taskDescription: isTaskSelected ? selectedTask!!.taskDescription : ''
         },
         enableReinitialize: true,
         validate,
@@ -60,7 +63,7 @@ const CreateTodo = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.taskname}
-                        error={touched.taskname && errors.taskname ? 'true' : 'false'}
+                        data-error={touched.taskname && errors.taskname ? 'true' : 'false'}
                     />
                 </div>
 
@@ -73,7 +76,7 @@ const CreateTodo = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.taskDescription}
-                        error={touched.taskDescription && errors.taskDescription ? 'true' : 'false'}
+                        data-error={touched.taskDescription && errors.taskDescription ? 'true' : 'false'}
                     ></textarea>
                 </div>
 
