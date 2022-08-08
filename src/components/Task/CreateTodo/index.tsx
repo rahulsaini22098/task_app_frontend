@@ -5,26 +5,16 @@ import { Input } from 'antd'
 import { CreateTodoProps, FormValues } from '../types'
 
 import style from './style.module.css'
+import { taskSchema } from '../util'
 
 
-const CreateTodo: React.FC<CreateTodoProps> = ({ selectedTask,  onTaskCreate, onTaskUpdate }) => {
+const CreateTodo: React.FC<CreateTodoProps> = ({
+  selectedTask,  
+  onTaskCreate, 
+  onTaskUpdate,
+}) => {
 
   const isTaskSelected = selectedTask !== null
-
-  const validate = (values: FormValues) => {
-    const { taskname, taskDescription } = values
-    const errors: any = {}
-
-    if (!taskname || taskname.length === 0) {
-      errors.taskname = 'Required'
-    }
-
-    if (!taskDescription || taskDescription.length === 0) {
-      errors.taskDescription = 'Required'
-    }
-
-    return errors
-  }
 
   const {
     values,
@@ -40,7 +30,7 @@ const CreateTodo: React.FC<CreateTodoProps> = ({ selectedTask,  onTaskCreate, on
       taskDescription: isTaskSelected ? selectedTask.taskDescription : ''
     },
     enableReinitialize: true,
-    validate,
+    validationSchema: taskSchema,
     onSubmit: values => {
       isTaskSelected
         ? onTaskUpdate(selectedTask.id, values, resetForm)

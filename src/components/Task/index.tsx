@@ -62,17 +62,18 @@ const Task = () => {
 
   const taskDeleteHandler = (taskId: string) => {
     axios.delete(`${taskId}`)
-      .then((res: any) => {
+      .then(() => {
         const filterTasks = state.tasks.filter(task => task.id !== taskId)
         setState({ ...state, tasks: filterTasks })
       })
-      .catch((err: any) => {
+      .catch((err: Error) => {
         console.log(err)
       })
   }
 
   const taskEditHandler = (id: string) => {
     const task = state.tasks.find(task => task.id === id)
+
     if(task !== undefined){
       setState({ ...state, selectedTask: task })
     }
