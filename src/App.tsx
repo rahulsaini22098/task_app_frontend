@@ -22,6 +22,16 @@ function App() {
         />
 
         <Route 
+          path='/signin' 
+          element={<Authentication />} 
+        />
+
+        <Route 
+          path='/signup' 
+          element={<Authentication />} 
+        />
+
+        <Route 
           path='/task' 
           element={
             <AuthorizationHOC>
