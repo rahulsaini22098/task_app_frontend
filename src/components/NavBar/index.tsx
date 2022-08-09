@@ -1,0 +1,41 @@
+import React from 'react'
+import axios from 'axios'
+import { UserOutlined } from '@ant-design/icons'
+
+import style from './style.module.css'
+
+const NavBar = () => {
+
+  const changePictureHandler = (e: { target: HTMLInputElement }) => {
+    const file = e.target.files?.[0]
+        
+    if(file){
+      const formData = new FormData()
+      formData.set('profile_picture', file, file.name)
+      axios.post('/upload/picture', formData, {
+        headers: {
+          'content-type': 'multipart/form-data'
+        }
+      })
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    }
+  }
+
+  return (
+    <div className={style.navbar_container}>
+      <div className={style.user_profile_image}>
+        <UserOutlined />
+        <input
+          className={style.input_upload_file}
+          type="file"
+          accept="image/*"
+          onChange={(e) => changePictureHandler(e)}
+        />
+      </div>
+    </div>
+  )
+}
+
+
+export default NavBar

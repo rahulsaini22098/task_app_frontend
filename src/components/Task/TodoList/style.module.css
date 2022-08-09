@@ -1,7 +1,7 @@
 .task_list{
     min-height: 400px;
     max-height: 500px;
-    margin-top: 50px;
+    margin: 50px 0 0 0;
     list-style-type: none;
     background-color: #ffffff;
     padding: 20px 30px;
@@ -46,7 +46,7 @@
 .task_operations{
     width: 150px;
 }
-.task_operations > svg{
+.task_operations > span{
     margin: 0 10px;
     font-size: 16px;
     cursor: pointer;
