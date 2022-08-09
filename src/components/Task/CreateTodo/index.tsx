@@ -2,10 +2,10 @@ import React from 'react'
 import { useFormik } from 'formik'
 import { Input } from 'antd'
 
-import { CreateTodoProps, FormValues } from '../types'
+import { CreateTodoProps } from '../types'
+import { taskSchema } from '../util'
 
 import style from './style.module.css'
-import { taskSchema } from '../util'
 
 
 const CreateTodo: React.FC<CreateTodoProps> = ({
