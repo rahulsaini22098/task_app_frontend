@@ -5,7 +5,7 @@ import './App.css'
 import Task from './components/Task'
 import Authentication from './components/Authentication'
 import AuthorizationHOC from './hoc/AuthorizationHOC'
-import MainLayout from './hoc/MainLayout'
+import MainLayout from './hoc/MainLayout/MainLayout'
 
 function App() {
   return (
@@ -13,7 +13,28 @@ function App() {
       <Routes>
         <Route 
           path='/' 
-          element={<MainLayout />} 
+          element={
+            <AuthorizationHOC>
+              <Task />
+            </AuthorizationHOC>
+          } 
+        />
+
+        <Route 
+          path='/completed' 
+          element={
+            <AuthorizationHOC>
+              <Task />
+            </AuthorizationHOC>
+          } 
+        />
+        <Route 
+          path='/' 
+          element={
+            <AuthorizationHOC>
+              <Task />
+            </AuthorizationHOC>
+          } 
         />
         
         <Route 
@@ -32,17 +53,8 @@ function App() {
         />
 
         <Route 
-          path='/task' 
-          element={
-            <AuthorizationHOC>
-              <Task />
-            </AuthorizationHOC>
-          } 
-        />
-
-        <Route 
           path='*' 
-          element={<Navigate to='/' />}
+          element={<Navigate to='/signup' />}
         />
       </Routes>
     </BrowserRouter>
