@@ -10,7 +10,8 @@ import style from './style.module.css'
 
 const TodoList = ({
     tasks,
-    onTaskDelete
+    onTaskDelete,
+    onEditTask
 }) => {
 
     const tasksList = tasks.map((task) => {
@@ -23,7 +24,7 @@ const TodoList = ({
                     </div>
 
                     <div className={style.task_operations}>
-                        <FaEdit />
+                        <FaEdit onClick={() => onEditTask(task.id)} />
                         <FaCheck className={style.success} />
                         <FaTrash
                             className={style.danger}
@@ -37,7 +38,9 @@ const TodoList = ({
     })
 
     return (
-        <ul className={style.task_list}>{tasksList}</ul>
+        <React.Fragment>
+            <ul className={style.task_list}>{tasksList}</ul>
+        </React.Fragment>
     )
 }
 
