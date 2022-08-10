@@ -1,18 +1,35 @@
 import { UserOutlined } from '@ant-design/icons'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate  } from 'react-router-dom'
 
 import axios from '../../utilities/axios'
 import NavBar from '../../components/NavBar'
-import { getUser } from '../../utilities/helperfunction'
+import { getUser, User } from '../../utilities/helperfunction'
 
 import style from './style.module.css'
 
 type MainLayoutProps = {
     children: JSX.Element
 }
+
 const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
+  const [token, setToken] = useState<string>()
+  const [userDetail, setUserDetail] = useState<User>()
+
   const naviagte = useNavigate()
+
+
+  useEffect(() => {
+    const { token, user } = getUser()
+
+    if(token !== null){
+      setToken(token)
+    }
+    
+    if(user !== null){
+      setUserDetail(user)
+    }
+  }, [])
 
   const logoutHandler = () => {
     localStorage.removeItem('user')
@@ -26,12 +43,18 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
     if(file){
       const formData = new FormData()
       formData.set('profile_picture', file, file.name)
-      axios.post('/upload/picture', formData, {
+      axios.post('/user/profilepicture/upload', formData, {
         headers: {
-          'content-type': 'multipart/form-data'
+          'content-type': 'multipart/form-data',
+          'authorization': `Bearer ${token}`
         }
       })
-        .then(res => console.log(res))
+        .then(res => {
+          if(userDetail !== undefined && res.data !== null){   
+            setUserDetail({ ...userDetail, profile_picture: res.data.profile_picture })
+            localStorage.setItem('user', JSON.stringify(userDetail))
+          }
+        })
         .catch(err => console.log(err))
     }
   }
@@ -45,7 +68,10 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
         </div>
         <div className={style.nav_right}>
           <div className={style.user_profile_image}>
-            <UserOutlined />
+            { userDetail == undefined || userDetail.profile_picture == null
+              ? <UserOutlined />
+              : <img src={userDetail.profile_picture} width="100%" height="100%" />
+            }
             <input
               className={style.input_upload_file}
               type="file"

@@ -32,12 +32,12 @@ const SignIn = () => {
     }
   })
 
-  const { values, errors, handleChange, handleSubmit, resetForm } = formik
+  const { values, touched, errors, handleChange, handleSubmit, resetForm } = formik
 
   const signInHandler = async (values: SignInTypes) => {
     try{
       const user = await axios.post('/user/login', values)
-      localStorage.setItem('user', JSON.stringify(user.data))
+      localStorage.setItem('user', JSON.stringify(user.data.user))
       localStorage.setItem('token', user.data.token || null)
       resetForm()
       navigate('/')
@@ -55,7 +55,7 @@ const SignIn = () => {
           value={values.email}
           placeholder="eg. test@abc.com"
           onChange={handleChange}
-          status={errors.email !== undefined ? 'error' : ''}
+          status={touched.email && errors.email !== undefined ? 'error' : ''}
         />
       </Form.Item>
 
@@ -65,7 +65,7 @@ const SignIn = () => {
           name="password" 
           value={values.password} 
           onChange={handleChange}
-          status={errors.password !== undefined ? 'error' : ''}
+          status={touched.email && errors.password !== undefined ? 'error' : ''}
         />
       </Form.Item>
       

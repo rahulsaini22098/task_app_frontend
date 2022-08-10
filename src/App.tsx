@@ -6,6 +6,7 @@ import Task from './components/Task'
 import Authentication from './components/Authentication'
 import AuthorizationHOC from './hoc/AuthorizationHOC'
 import MainLayout from './hoc/MainLayout/MainLayout'
+import CompleteTask from './components/CompletedTask'
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
           path='/completed' 
           element={
             <AuthorizationHOC>
-              <Task />
+              <CompleteTask />
             </AuthorizationHOC>
           } 
         />

@@ -36,7 +36,7 @@ const SignUp = () => {
     }
   })
   
-  const { values, errors, handleChange, handleSubmit, resetForm } = formik
+  const { values, touched, errors, handleChange, handleSubmit, resetForm } = formik
 
   const onSignUpHandler = async (values: SignUpTypes) => {
     try {
@@ -57,7 +57,7 @@ const SignUp = () => {
           value={values.name}
           placeholder="eg. Joe Root" 
           onChange={handleChange}
-          status={errors.name !== undefined ? 'error' : ''}
+          status={touched.name && errors.name !== undefined ? 'error' : ''}
         />
       </Form.Item>
 
@@ -68,7 +68,7 @@ const SignUp = () => {
           value={values.email}
           placeholder="eg. test@abc.com"
           onChange={handleChange}
-          status={errors.email !== undefined ? 'error' : ''}
+          status={touched.name && errors.email !== undefined ? 'error' : ''}
         />
       </Form.Item>
 
@@ -78,7 +78,7 @@ const SignUp = () => {
           name="password"
           value={values.password} 
           onChange={handleChange}
-          status={errors.password !== undefined ? 'error' : ''}
+          status={touched.password && errors.password !== undefined ? 'error' : ''}
         />
       </Form.Item>
 
@@ -88,7 +88,7 @@ const SignUp = () => {
           name="confirm_password" 
           value={values.confirm_password}
           onChange={handleChange}
-          status={errors.confirm_password !== undefined ? 'error' : ''}
+          status={touched.confirm_password && errors.confirm_password !== undefined ? 'error' : ''}
         />
       </Form.Item>
 

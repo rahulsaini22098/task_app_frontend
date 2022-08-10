@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import axios from '../../utilities/axios'
+import { getUser } from '../../utilities/helperfunction'
 
 import style from './style.module.css'
 import CreateTodo from './CreateTodo'
@@ -15,6 +16,8 @@ const initialState = {
 
 const Task = () => {
   const [state, setState] = useState<InitialState>(initialState)
+  const { token } = getUser()
+  axios.defaults.headers.common['authorization'] = `Bearer ${token}`
 
   useEffect(() => {
     axios.get<TaskType[]>('/')
@@ -30,6 +33,7 @@ const Task = () => {
   }, [])
 
   const taskCreateHandler = (value: FormValues, cb: () => void) => {
+
     axios.post('create', value)
       .then((res: { data: TaskType; }) => {
         const tasks = [...state.tasks, res.data]
@@ -41,7 +45,7 @@ const Task = () => {
       })
   }
 
-  const taskUpdateHandler = (id: string, values: FormValues, cb: () => void) => {
+  const taskUpdateHandler = (id: string, values: FormValues, cb?: () => void) => {
     axios.post(`update/${id}`, values)
       .then(() => {
         const filterTask: TaskType[] = state.tasks.filter(task => task.id !== id)
@@ -49,9 +53,10 @@ const Task = () => {
         if(state.selectedTask !== null){
           const updateTask: TaskType = { ...state.selectedTask, ...values }
           filterTask.push(updateTask)
-          setState({ ...state, tasks: filterTask, selectedTask: null })
-          cb()
+          cb?.()
         }
+
+        setState({ ...state, tasks: filterTask, selectedTask: null })
       })
       .catch((err: Error) => {
         console.log(err)
@@ -91,6 +96,7 @@ const Task = () => {
         tasks={state.tasks}
         onTaskDelete={taskDeleteHandler}
         onEditTask={taskEditHandler}
+        onTaskUpdate={taskUpdateHandler}
       />
     </div>
   )

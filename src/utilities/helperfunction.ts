@@ -1,10 +1,10 @@
-type User = {
+export type User = {
   name: string,
   email: string,
   profile_picture: string | null
 }
 
-type GetUser = {
+export type GetUser = {
   token: string | null,
   user: User | null
 }
@@ -15,20 +15,11 @@ export const getUser = (): GetUser => {
     user: null
   }
 
-  if (typeof window === 'undefined') {
-    return user
-  }
+  const userObj = localStorage.getItem('user')
 
-  if (localStorage.getItem('token') && localStorage.getItem('user')) {
-    const token = localStorage.getItem('token')
-    const checkUser = localStorage.getItem('user')
-    let user = null
-
-    if(checkUser !== null){
-      user = JSON.parse(checkUser)
-    }
-
-    return { token, user }
+  if (localStorage.getItem('token') !== null &&  userObj!== null) {
+    user.token = localStorage.getItem('token')
+    user.user = JSON.parse(userObj)
   }
   
   return user
