@@ -1,0 +1,8 @@
+{
+    "development": {
+        "backend_url": "http://localhost:8000/"
+    },
+    "production": {
+        "backend_url": "https://513b-117-222-239-68.in.ngrok.io"
+    }
+}
