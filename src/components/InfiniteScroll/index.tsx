@@ -1,6 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons'
 import axios from 'axios'
-import { NodeElement } from 'rc-tree/lib/interface'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 import style from './style.module.css'
@@ -125,7 +124,7 @@ const InfiniteScroll = () =>{
     <div className={style.main_container}>
       <ul className={style.task_list}>
         {tasks}
-        { loading && <LoadingOutlined />}
+        { loading && <LoadingOutlined className={style.loader} />}
       </ul>
     </div>
   )
