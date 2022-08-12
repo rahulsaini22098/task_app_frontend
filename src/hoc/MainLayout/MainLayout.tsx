@@ -61,7 +61,7 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
   }
 
   const ErrorFallback = (): JSX.Element => {
-    return ( <h1>Stay Clam</h1>)
+    return ( <h1 className={style.error_boundary}>Stay Clam</h1>)
   }
 
   

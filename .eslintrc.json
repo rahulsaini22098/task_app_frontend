@@ -67,5 +67,10 @@
         "comma-spacing": ["error", { "before": false, "after": true }],
         "object-curly-spacing": ["error", "always"]
 
+    },
+    "settings": {
+        "react":{
+            "version": "detect"
+        }
     }
 }

@@ -52,4 +52,9 @@
   .logout_btn:hover{
     color: rgb(142 85 255) !important;
   }
+
+  .error_boundary{
+    text-align: center;
+    color: #ffffff;
+  }
   
