@@ -10,7 +10,7 @@ interface EnvironmentTypes{
   [development: string]: EnvTypes,
 }
 
-const env = process.env.REACT_APP_NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'development'
 const config = configJson as EnvironmentTypes
 
 const instance = axios.create({
