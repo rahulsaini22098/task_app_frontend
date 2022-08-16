@@ -6,7 +6,7 @@ import { getUser } from '../../utilities/helperfunction'
 import style from './style.module.css'
 import CreateTodo from './CreateTodo'
 import TodoList from './TodoList'
-import { FormValues, InitialState, TaskType } from './types'
+import { FormValues, TaskInitialState, TaskType } from './types'
 
 const initialState = {
   tasks: [],
@@ -15,7 +15,7 @@ const initialState = {
 }
 
 const Task = () => {
-  const [state, setState] = useState<InitialState>(initialState)
+  const [state, setState] = useState<TaskInitialState>(initialState)
   const { token } = getUser()
   axios.defaults.headers.common['authorization'] = `Bearer ${token}`
 
