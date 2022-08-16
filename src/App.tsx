@@ -5,8 +5,8 @@ import './App.css'
 import Task from './components/Task'
 import Authentication from './components/Authentication'
 import AuthorizationHOC from './hoc/AuthorizationHOC'
-import MainLayout from './hoc/MainLayout/MainLayout'
 import CompleteTask from './components/CompletedTask'
+import InfiniteScroll from './components/InfiniteScroll'
 
 function App() {
   return (
@@ -26,6 +26,15 @@ function App() {
           element={
             <AuthorizationHOC>
               <CompleteTask />
+            </AuthorizationHOC>
+          } 
+        />
+
+        <Route 
+          path='/scroll' 
+          element={
+            <AuthorizationHOC>
+              <InfiniteScroll />
             </AuthorizationHOC>
           } 
         />

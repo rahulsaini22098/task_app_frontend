@@ -65,6 +65,7 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
         <div className={style.nav_links}>
           <NavLink to="/"> Create Task </NavLink>
           <NavLink to="/completed">Completed Task </NavLink>
+          <NavLink to="/scroll">Infinite Scroll </NavLink>
         </div>
         <div className={style.nav_right}>
           <div className={style.user_profile_image}>
