@@ -1,29 +1,28 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
+import { useAppDispatch, useAppSelector } from '../../redux/hook'
+import { getAllTasks } from '../../redux/slice/taskSlice'
 import axios from '../../utilities/axios'
-import { getUser } from '../../utilities/helperfunction'
-import { TaskType } from '../Task/types'
+
 
 import style from './style.module.css'
 
 const CompleteTask = () => {
-  const { token } = getUser()
-  const [completedTasks, setCompletedTasks] = useState<TaskType[]>([])
+  const dispatch = useAppDispatch()
+  const { token } = useAppSelector((state) => state.user)
+  const { tasks } = useAppSelector((state) => state.tasks)
   axios.defaults.headers.common['authorization'] = `Bearer ${token}`
 
   
   useEffect(() => {
-    (async () => {
-      try {
-        const task = await axios.get<TaskType[]>('/task/completed')
-        setCompletedTasks(task.data)       
-      } catch (error) { 
-        console.log(error)   
-      }
-    })()
-  }, [])
+    if(tasks.length == 0 && token !== null){
+      dispatch(getAllTasks(token))
+    }
+  }, [token])
 
-  const tasks = completedTasks.map(task => (
+  const completedTask = tasks.filter(tasks => tasks.isDone)
+
+  const tasksList = completedTask.map(task => (
     <li className={style.list_item} key={task.id}>
       <div className={style.group_item}>
         <div className={style.task_description}>
@@ -35,7 +34,7 @@ const CompleteTask = () => {
   ))
 
   return (
-    <ul className={style.task_list}>{tasks}</ul>
+    <ul className={style.task_list}>{tasksList}</ul>
   )
 }
 

@@ -1,99 +1,63 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
-import axios from '../../utilities/axios'
-import { getUser } from '../../utilities/helperfunction'
+import { getAllTasks,
+  createTask,
+  deleteTask, 
+  updatedTask,
+  updateSelectedTask } from '../../redux/slice/taskSlice'
+import { useAppDispatch, useAppSelector } from '../../redux/hook'
 
 import style from './style.module.css'
 import CreateTodo from './CreateTodo'
 import TodoList from './TodoList'
-import { FormValues, TaskInitialState, TaskType } from './types'
-
-const initialState = {
-  tasks: [],
-  taskListLoader: true,
-  selectedTask: null,
-}
+import { FormValues } from './types'
 
 const Task = () => {
-  const [state, setState] = useState<TaskInitialState>(initialState)
-  const { token } = getUser()
-  axios.defaults.headers.common['authorization'] = `Bearer ${token}`
+  const { tasks, selectedTask } = useAppSelector((state) => state.tasks)
+  const { token } = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    axios.get<TaskType[]>('/')
-      .then((res: { data: TaskType[] }) => {
-        if (res !== null) {
-          setState({ ...state, tasks: res.data, taskListLoader: false })
-        }
-      })
-      .catch((err: Error) => {
-        console.log(err)
-        setState({ ...state, taskListLoader: false })
-      })
-  }, [])
+    if(token){
+      dispatch(getAllTasks(token))
+    }
+  }, [token])
 
-  const taskCreateHandler = (value: FormValues, cb: () => void) => {
-
-    axios.post('create', value)
-      .then((res: { data: TaskType; }) => {
-        const tasks = [...state.tasks, res.data]
-        setState({ ...state, tasks: tasks })
-        cb()
-      })
-      .catch((err: Error) => {
-        console.log(err)
-      })
+  const taskCreateHandler = (values: FormValues, cb: () => void) => {
+    if(token){
+      dispatch(createTask({ token, values }))
+      cb()
+    }
   }
 
   const taskUpdateHandler = (id: string, values: FormValues, cb?: () => void) => {
-    axios.post(`update/${id}`, values)
-      .then(() => {
-        const filterTask: TaskType[] = state.tasks.filter(task => task.id !== id)
+    if(token){
+      dispatch(updatedTask({ id, values, token }))
+    }
 
-        if(state.selectedTask !== null){
-          const updateTask: TaskType = { ...state.selectedTask, ...values }
-          filterTask.push(updateTask)
-          cb?.()
-        }
-
-        setState({ ...state, tasks: filterTask, selectedTask: null })
-      })
-      .catch((err: Error) => {
-        console.log(err)
-      })
-
-
+    cb?.()
   }
 
   const taskDeleteHandler = (taskId: string) => {
-    axios.delete(`${taskId}`)
-      .then(() => {
-        const filterTasks = state.tasks.filter(task => task.id !== taskId)
-        setState({ ...state, tasks: filterTasks })
-      })
-      .catch((err: Error) => {
-        console.log(err)
-      })
+    if(token){
+      dispatch(deleteTask({ taskId, token }))
+    }
   }
 
   const taskEditHandler = (id: string) => {
-    const task = state.tasks.find(task => task.id === id)
-
-    if(task !== undefined){
-      setState({ ...state, selectedTask: task })
-    }
+    dispatch(updateSelectedTask(id))
   }
 
 
   return (
     <div className={style.main_container}>
       <CreateTodo
-        selectedTask={state.selectedTask}
+        selectedTask={selectedTask}
         onTaskCreate={taskCreateHandler}
         onTaskUpdate={taskUpdateHandler}
       />
       <TodoList
-        tasks={state.tasks}
+        tasks={tasks}
         onTaskDelete={taskDeleteHandler}
         onEditTask={taskEditHandler}
         onTaskUpdate={taskUpdateHandler}

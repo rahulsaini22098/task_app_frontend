@@ -18,7 +18,7 @@ const AuthorizationHOC: React.FC<AuthorizationHocProp> = ({ children }) =>{
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if(userDetail.token == null && userDetail.user !== null){
+    if(userDetail.token == null && userDetail.user == null){
       dispatch(setUserLogin({ token, user }))
     }
   }, [userDetail.token, userDetail.user])
