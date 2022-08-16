@@ -8,7 +8,8 @@ import style from './style.module.css'
 const TodoList: React.FC<TodoListInterface> = ({
   tasks,
   onTaskDelete,
-  onEditTask
+  onEditTask,
+  onTaskUpdate
 }) => {
 
   const tasksList = tasks.map((task) => {
@@ -22,7 +23,7 @@ const TodoList: React.FC<TodoListInterface> = ({
 
           <div className={style.task_operations}>
             <EditOutlined onClick={() => onEditTask(task.id)} />
-            <CheckOutlined className={style.success} />
+            <CheckOutlined className={style.success} onClick={() => onTaskUpdate(task.id, { isDone: true })} />
             <DeleteFilled className={style.danger} onClick={() => onTaskDelete(task.id)} />
           </div>
         </div>
