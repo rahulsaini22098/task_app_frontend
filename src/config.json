@@ -3,6 +3,6 @@
         "backend_url": "http://localhost:8001/"
     },
     "production": {
-        "backend_url": "http://3.110.177.156:8080/"
+        "backend_url": "https://3.110.177.156/"
     }
 }
