@@ -1,0 +1,8 @@
+{
+    "development": {
+        "backend_url": "http://localhost:8001/"
+    },
+    "production": {
+        "backend_url": "https://3.110.177.156/"
+    }
+}

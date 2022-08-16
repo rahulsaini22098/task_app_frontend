@@ -1,26 +1,21 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import axios from 'axios'
-import { NodeElement } from 'rc-tree/lib/interface'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import axios, { CancelToken } from 'axios'
+import React, { useEffect, useState } from 'react'
+
+import useInfiniteScroll from '../../customHooks/useInfiniteScroll'
 
 import style from './style.module.css'
 
 interface Tasks {
-    id: number,
-    todo: string,
-    completed: string,
-    userId: number  
+  id: number,
+  todo: string,
+  completed: string,
+  userId: number  
 }
 
 interface Fetch{
-    todos: Tasks[],
-    total: number,
-}
-
-interface IntersectionOptions{
-    root: any,
-    rootMargin: string,
-    threshold: number
+  todos: Tasks[],
+  total: number,
 }
 
 const initialState: Fetch = {
@@ -28,16 +23,19 @@ const initialState: Fetch = {
   total: 0,
 }
 
-const InfiniteScroll = () =>{
+const InfiniteScroll = () => {
   const [hasMore, setHasMore] = useState<boolean>(true)
   const [loading, setLoading] = useState(false)
   const [skipCount, setSkipCount] = useState<number>(0)
   const [state, setState] = useState<Fetch>(initialState)
+  const { lastElementRef } = useInfiniteScroll(hasMore, loading,  () => setSkipCount(prev => prev + 20))
 
-  const fetchTasks = async () => {
+  const fetchTasks = async (controller: AbortController) => {
     try {
       setLoading(true)
-      const response = await axios.get<Fetch>(`https://dummyjson.com/todos/?limit=20&skip=${skipCount}`)
+      const response = await axios.get<Fetch>(`https://dummyjson.com/todos/?limit=20&skip=${skipCount}`, {
+        signal: controller.signal
+      })
       const newtasks = [...state.todos, ...response.data.todos]
       const total = response.data.total
       setState({ 
@@ -58,33 +56,16 @@ const InfiniteScroll = () =>{
   }
 
   useEffect(() =>{
+    const controller = new AbortController();
+
     (async () => {
-      await fetchTasks()
+      await fetchTasks(controller)
     })()
-  }, [skipCount])
 
-  const observer = useRef<IntersectionObserver>()
-
-  const lastElementRef = useCallback((node: HTMLDivElement) =>{
-    
-    if(loading) return
-
-    if(observer.current) observer.current.disconnect()
-
-    const options: IntersectionOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0
+    return () => {
+      controller.abort()
     }
-
-    observer.current = new IntersectionObserver((entries) => {
-      if(entries[0].isIntersecting && hasMore){
-        setSkipCount(prev => prev + 20)      
-      }
-    }, options)
-
-    if(node) observer.current.observe(node)
-  }, [loading, hasMore])
+  }, [skipCount])
 
 
   const tasks = state.todos.map((task, index) => {
@@ -116,16 +97,11 @@ const InfiniteScroll = () =>{
       </li>
     )})
 
-  useEffect(() => {
-    fetchTasks()
-  }, [])
-
-
-  return(
+  return (
     <div className={style.main_container}>
       <ul className={style.task_list}>
         {tasks}
-        { loading && <LoadingOutlined />}
+        { loading && <LoadingOutlined className={style.loader} />}
       </ul>
     </div>
   )

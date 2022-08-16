@@ -1,6 +1,7 @@
 import { UserOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate  } from 'react-router-dom'
+import { ErrorBoundary } from 'react-error-boundary'
 
 import axios from '../../utilities/axios'
 import NavBar from '../../components/NavBar'
@@ -59,6 +60,12 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
     }
   }
 
+  const ErrorFallback = (): JSX.Element => {
+    return ( <h1 className={style.error_boundary}>Stay Clam</h1>)
+  }
+
+  
+
   return (
     <React.Fragment>
       <NavBar>
@@ -82,7 +89,9 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
           <div className={style.logout_btn} onClick={logoutHandler}>Logout</div>
         </div>
       </NavBar>
-      {children}
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        {children}
+      </ErrorBoundary>
     </React.Fragment>
   )
 }
