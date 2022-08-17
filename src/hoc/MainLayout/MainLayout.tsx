@@ -3,9 +3,9 @@ import { NavLink, useNavigate  } from 'react-router-dom'
 import { UserOutlined } from '@ant-design/icons'
 import { ErrorBoundary } from 'react-error-boundary'
 
-import axios from '../../utilities/axios'
 import NavBar from '../../components/NavBar'
-import { useAppSelector } from '../../redux/hook'
+import { useAppDispatch, useAppSelector } from '../../redux/hook'
+import { updateProfilePicture } from '../../redux/slice/userSlice'
 
 import style from './style.module.css'
 
@@ -15,6 +15,7 @@ type MainLayoutProps = {
 
 const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
   const { token, user } = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
 
   const naviagte = useNavigate()
 
@@ -28,28 +29,16 @@ const MainLayout: React.FC<MainLayoutProps>  = ({ children }) => {
 
   const changePictureHandler = (e: { target: HTMLInputElement }) => {
     const file = e.target.files?.[0]
-        
-    // if(file){
-    //   const formData = new FormData()
-    //   formData.set('profile_picture', file, file.name)
-    //   axios.post('/user/profilepicture/upload', formData, {
-    //     headers: {
-    //       'content-type': 'multipart/form-data',
-    //       'authorization': `Bearer ${token}`
-    //     }
-    //   })
-    //     .then(res => {
-    //       if(user !== null && res.data !== null){   
-    //         setUserDetail({ ...userDetail, profile_picture: res.data.profile_picture })
-    //         localStorage.setItem('user', JSON.stringify(userDetail))
-    //       }
-    //     })
-    //     .catch(err => console.log(err))
-    // }
+
+    if(file && token){
+      const formData = new FormData()
+      formData.set('profile_picture', file, 'namw')
+      dispatch(updateProfilePicture({ formData: formData, token: token }))
+    }
   }
 
   const ErrorFallback = (): JSX.Element => {
-    return ( <h1 className={style.error_boundary}>Stay Clam</h1>)
+    return (<h1 className={style.error_boundary}>Stay Clam</h1>)
   }
 
   

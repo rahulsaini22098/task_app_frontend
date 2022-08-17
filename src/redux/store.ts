@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import  userReducer from './slice/userSlice'
+import userReducer from './slice/userSlice'
 import taskReducer from './slice/taskSlice'
+import infinitScrollSlice from './slice/infiniteScroll'
 
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    tasks: taskReducer
+    tasks: taskReducer,
+    infinitScroll: infinitScrollSlice
   }
 })
 

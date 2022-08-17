@@ -1,75 +1,29 @@
 import { LoadingOutlined } from '@ant-design/icons'
-import axios, { CancelToken } from 'axios'
 import React, { useEffect, useState } from 'react'
 
 import useInfiniteScroll from '../../customHooks/useInfiniteScroll'
+import { useAppDispatch, useAppSelector } from '../../redux/hook'
+import { fetchTask } from '../../redux/slice/infiniteScroll'
 
 import style from './style.module.css'
 
-interface Tasks {
-  id: number,
-  todo: string,
-  completed: string,
-  userId: number  
-}
-
-interface Fetch{
-  todos: Tasks[],
-  total: number,
-}
-
-const initialState: Fetch = {
-  todos: [],
-  total: 0,
-}
-
 const InfiniteScroll = () => {
-  const [hasMore, setHasMore] = useState<boolean>(true)
-  const [loading, setLoading] = useState(false)
+  const dispatch = useAppDispatch()
+  const { todos, hasMore, loading } = useAppSelector((state) => state.infinitScroll)
+
   const [skipCount, setSkipCount] = useState<number>(0)
-  const [state, setState] = useState<Fetch>(initialState)
   const { lastElementRef } = useInfiniteScroll(hasMore, loading,  () => setSkipCount(prev => prev + 20))
 
-  const fetchTasks = async (controller: AbortController) => {
-    try {
-      setLoading(true)
-      const response = await axios.get<Fetch>(`https://dummyjson.com/todos/?limit=20&skip=${skipCount}`, {
-        signal: controller.signal
-      })
-      const newtasks = [...state.todos, ...response.data.todos]
-      const total = response.data.total
-      setState({ 
-        ...state,
-        todos: newtasks,
-        total: total,
-      }) 
-      
-      if(response.data.todos.length === 0){
-        setHasMore(false)
-      }
-
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      console.log(error)
-    }
-  }
-
   useEffect(() =>{
-    const controller = new AbortController();
+    const controller = new AbortController()
+    dispatch(fetchTask({ skipCount, controller }))
 
-    (async () => {
-      await fetchTasks(controller)
-    })()
-
-    return () => {
-      controller.abort()
-    }
+    return () => { controller.abort() }
   }, [skipCount])
 
 
-  const tasks = state.todos.map((task, index) => {
-    if(index === state.todos.length -1){
+  const tasks = todos.map((task, index) => {
+    if(index === todos.length -1){
       return (
         <li 
           className={style.list_item} 

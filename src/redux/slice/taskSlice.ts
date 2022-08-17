@@ -24,7 +24,7 @@ const initialState: TaskInitialState = {
   taskListLoader: false
 }
 
-export const getAllTasks = createAsyncThunk(
+const getAllTasks = createAsyncThunk(
   'task/getAllUSer',
   async (payload: string, action) => {
     try {
@@ -42,7 +42,7 @@ export const getAllTasks = createAsyncThunk(
   }
 )
 
-export const createTask = createAsyncThunk(
+const createTask = createAsyncThunk(
   'task/createTask',
   async (payload: CreateTaskPayload, action) => {
     try {
@@ -59,12 +59,12 @@ export const createTask = createAsyncThunk(
   }
 )
 
-export const updatedTask = createAsyncThunk(
+const updatedTask = createAsyncThunk(
   'task/update',
   async (payload: UpdatedTaskPayload, action) => {
     try {
       const { id, values, token } = payload
-      const res = await axios.post(`update/${id}`, values, {
+      await axios.post(`update/${id}`, values, {
         headers: {
           'authorization': `Bearer ${token}`
         }
@@ -78,7 +78,7 @@ export const updatedTask = createAsyncThunk(
 )
 
 
-export const deleteTask = createAsyncThunk(
+const deleteTask = createAsyncThunk(
   'task/delete',
   async(payload: DeleteTaskPayload, action) => {
     try {
@@ -146,7 +146,15 @@ export const taskSlice = createSlice({
   }
 })
 
-export const updateSelectedTask = taskSlice.actions.updateSelectedTask
+const { updateSelectedTask } = taskSlice.actions
+
+export { 
+  getAllTasks, 
+  createTask,
+  updatedTask, 
+  deleteTask,
+  updateSelectedTask
+}
 
 export default taskSlice.reducer
 

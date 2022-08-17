@@ -6,12 +6,17 @@ import { SignInTypes } from '../../components/Authentication/SignIn'
 
 import { GetUser } from './../../utilities/helperfunction'
 
+interface ProfilePicturePayload{
+  formData: FormData,
+  token: string
+}
+
 const initialState: GetUser = {
   token: null,
   user: null
 }
 
-export const signUpUser = createAsyncThunk(
+const signUpUser = createAsyncThunk(
   'user/signup',
   async (values: SignUpTypes, action) => {
     try {
@@ -24,11 +29,31 @@ export const signUpUser = createAsyncThunk(
   }
 )
 
-export const signInUser = createAsyncThunk(
+const signInUser = createAsyncThunk(
   'user/signIn',
   async (values: SignInTypes, action) => {
     try {
       const res = await axios.post('/user/login', values)
+
+      return res.data
+    } catch (error) {
+      return action.rejectWithValue(error)
+    }
+  }
+)
+
+const updateProfilePicture = createAsyncThunk(
+  'user/updateProfilePicture',
+  async (payload: ProfilePicturePayload, action) => {
+    const { formData, token } = payload
+  
+    try {
+      const res = await axios.post('/user/profilepicture/upload', formData, {
+        headers: {
+          'content-type': 'multipart/form-data',
+          'authorization': `Bearer ${token}`
+        }
+      })
 
       return res.data
     } catch (error) {
@@ -69,9 +94,26 @@ export const userSlice = createSlice({
       .addCase(signInUser.rejected, (_, action) => {
         console.log(action.error)
       })
+      .addCase(updateProfilePicture.fulfilled, (state, action) => {
+        if(state.user !== null){
+          state.user['profile_picture'] = action.payload.profile_picture
+          localStorage.setItem('user', JSON.stringify(state.user))
+        }
+      })
+      .addCase(updateProfilePicture.rejected, (_, action) => {
+        console.log(action.error)
+      })
   }
 })
 
-export const { setUserLogin, userSignOut } = userSlice.actions
+const { setUserLogin, userSignOut } = userSlice.actions
+
+export {
+  signUpUser, 
+  signInUser, 
+  updateProfilePicture,
+  setUserLogin, 
+  userSignOut 
+}
 
 export default userSlice.reducer
