@@ -7,7 +7,7 @@ export interface TaskType {
   updatedAt: Date;
 }
 
-export interface InitialState {
+export interface TaskInitialState {
   tasks: TaskType[];
   taskListLoader: boolean;
   selectedTask: TaskType | null;

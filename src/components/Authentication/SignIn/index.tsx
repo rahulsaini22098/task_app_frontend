@@ -2,11 +2,11 @@ import React from 'react'
 import { Input, Button, Form } from 'antd'
 import { useFormik } from 'formik'
 import { object, SchemaOf, string } from 'yup'
-import { useNavigate } from 'react-router-dom'
 
-import axios from '../../../utilities/axios'
+import { useAppDispatch } from '../../../redux/hook'
+import { signInUser } from '../../../redux/slice/userSlice'
 
-type SignInTypes = {
+export type SignInTypes = {
   email: string,
   password: string
 }
@@ -17,7 +17,7 @@ const initialState: SignInTypes = {
 }
 
 const SignIn = () => {
-  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 
   const validationSchema: SchemaOf<SignInTypes> = object({
     email: string().email().required(),
@@ -32,18 +32,18 @@ const SignIn = () => {
     }
   })
 
-  const { values, touched, errors, handleChange, handleSubmit, resetForm } = formik
+  const { 
+    values, 
+    touched,
+    errors, 
+    handleChange,
+    handleSubmit, 
+    resetForm 
+  } = formik
 
   const signInHandler = async (values: SignInTypes) => {
-    try{
-      const user = await axios.post('/user/login', values)
-      localStorage.setItem('user', JSON.stringify(user.data.user))
-      localStorage.setItem('token', user.data.token || null)
-      resetForm()
-      navigate('/')
-    } catch(error){
-      console.log(error)
-    }
+    dispatch(signInUser(values))
+    resetForm()
   }
 
   return(

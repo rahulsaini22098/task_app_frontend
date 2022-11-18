@@ -2,22 +2,33 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { useAppSelector } from '../../redux/hook'
+import { getUser } from '../../utilities/helperfunction'
+
 import SignIn from './SignIn'
 import SignUp from './SignUp'
 import style from './style.module.css'
 
 const Authentication = () => {
   const [Signin, setSignIn] = useState<boolean>(true)
+  const userDetail = useAppSelector((state => state.user))
   const location = useLocation()
   const navigate = useNavigate()
 
   useEffect(() =>{
+    const { user, token } = getUser()
+
+    if(user !== null && token !== null){
+      navigate('/', { replace: true })
+    }
+
+
     if(location.pathname !== '/signin'){
       setSignIn(false)
     } else{
       setSignIn(true)
     }
-  }, [location])
+  }, [location, userDetail.token, userDetail.user])
 
   const routeHandler = (pathname: string) => {
     navigate(pathname, { replace: false })

@@ -4,8 +4,10 @@ import { useFormik } from 'formik'
 import { object, ref, SchemaOf, string } from 'yup'
 
 import axios from '../../../utilities/axios'
+import { useAppDispatch } from '../../../redux/hook'
+import { signUpUser } from '../../../redux/slice/userSlice'
 
-type SignUpTypes = {
+export type SignUpTypes = {
   name: string,
   email: string,
   password: string,
@@ -20,6 +22,8 @@ const initialState: SignUpTypes = {
 }
 
 const SignUp = () => {
+
+  const dispatch = useAppDispatch()
 
   const signUpValidation: SchemaOf<SignUpTypes> = object({
     name: string().trim().min(1).required(),
@@ -39,12 +43,8 @@ const SignUp = () => {
   const { values, touched, errors, handleChange, handleSubmit, resetForm } = formik
 
   const onSignUpHandler = async (values: SignUpTypes) => {
-    try {
-      await axios.post('/user/signup', values)
-      resetForm()
-    } catch (error) {
-      console.log(error)
-    }
+    dispatch(signUpUser(values))
+    resetForm()
   }
 
 

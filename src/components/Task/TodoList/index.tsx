@@ -12,7 +12,8 @@ const TodoList: React.FC<TodoListInterface> = ({
   onTaskUpdate
 }) => {
 
-  const tasksList = tasks.map((task) => {
+  const pendingTask = tasks.filter(task => !task.isDone)
+  const tasksList = pendingTask.map((task) => {
     return (
       <li className={style.list_item} key={task.id}>
         <div className={style.group_item}>
